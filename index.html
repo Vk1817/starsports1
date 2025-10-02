@@ -43,7 +43,7 @@
     header:hover img {
       filter: drop-shadow(0 0 12px rgba(29, 185, 84, 0.5));
     }
-/* 🔔 Telegram Join Popup Styles */
+/* 🔔 Telegram Join Popup Styles (UPDATED FOR IMAGE DESIGN) */
 .popup-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -57,12 +57,14 @@
 
 .popup-box {
   width: 320px;
-  background: rgba(20, 20, 30, 0.6);
-  border: 1px solid rgba(173, 216, 230, 0.25);
+  max-width: 90%; /* Added for better mobile support */
+  background: #1a1a1a; /* Darker solid background */
+  border: 1px solid rgba(255, 165, 0, 0.4); /* Orange border */
   border-radius: 20px;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.4), 0 0 80px rgba(173, 216, 230, 0.15);
-  padding: 2rem 1.5rem;
+  backdrop-filter: none;
+  /* Strong orange glow effect */
+  box-shadow: 0 0 10px rgba(255, 165, 0, 0.6), 0 0 40px rgba(255, 140, 0, 0.4);
+  padding: 2.5rem 1.5rem; /* Increased vertical padding */
   text-align: center;
   animation: fadeIn 0.5s ease forwards;
   position: relative;
@@ -76,17 +78,23 @@
 .popup-header {
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(45deg, #00eaff, #bd00ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ff9900; /* Solid orange color for header */
   margin-bottom: 0.4rem;
-  text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+  text-shadow: 0 0 10px rgba(255, 153, 0, 0.8); /* Stronger orange glow for text */
+  background: none; 
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
 }
 
 .popup-subtitle {
   font-size: 1rem;
-  color: #aaa;
-  margin-bottom: 1.2rem;
+  color: #d0d0d0; /* Slightly brighter text */
+  margin-bottom: 1.5rem; /* Increased margin */
+}
+
+.popup-subtitle strong {
+  color: #ffaa00; /* Highlight the channel name in orange */
+  font-weight: 600;
 }
 
 .popup-buttons {
@@ -126,22 +134,29 @@
   opacity: 1;
 }
 
+/* Updated Join Button: Solid Orange/Gold */
 .join-btn {
-  background: linear-gradient(135deg, #00eaff, #9c00ff);
-  box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+  background: #ff9900; /* Solid Orange/Gold */
+  box-shadow: 0 0 15px rgba(255, 153, 0, 0.7);
+  border: none;
 }
 
 .join-btn:hover {
-  background: linear-gradient(135deg, #00ffff, #c000ff);
-  box-shadow: 0 0 16px rgba(0, 255, 255, 0.6);
+  background: #ffaa33; /* Slightly lighter on hover */
+  box-shadow: 0 0 20px rgba(255, 153, 0, 1);
 }
 
+/* Updated Already Joined Button: Dark with subtle orange glow */
 .already-btn {
-  background: rgba(255,255,255,0.05);
+  background: #333333; /* Dark background */
+  color: #fff;
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  box-shadow: inset 0 0 5px rgba(255, 165, 0, 0.2);
 }
 
 .already-btn:hover {
-  background: rgba(255,255,255,0.15);
+  background: #444444; /* Slightly lighter dark on hover */
+  box-shadow: inset 0 0 8px rgba(255, 165, 0, 0.4);
 }
 
 .close-btn {
@@ -149,7 +164,7 @@
   top: 12px;
   right: 18px;
   font-size: 1.3rem;
-  color: #00eaff;
+  color: #ff9900; /* Updated close button color */
   background: none;
   border: none;
   cursor: pointer;
@@ -352,6 +367,7 @@
   </style>
 </head>
 <body>
+<!-- Visitor Counter Popup -->
 <div class="popup-overlay" id="visitorPopup" style="display:none;">
   <div class="popup-box">
     <button class="close-btn" onclick="closeVisitorPopup()">×</button>
@@ -362,16 +378,19 @@
     </div>
   </div>
 </div>
+<!-- Telegram Join Popup (UPDATED DESIGN AND TEXT) -->
 <div class="popup-overlay" id="popup">
   <div class="popup-box">
     <button class="close-btn" onclick="closePopup()">×</button>
     <div class="popup-header">Support Us!</div>
-    <div class="popup-subtitle">Join our Telegram for latest updates.</div>
+    <!-- Subtitle updated to include channel tag and full description -->
+    <div class="popup-subtitle">Join our Telegram channel <strong>@cricketcorner</strong> for instant updates, highlights, and exclusive links.</div>
     <div class="popup-buttons">
-            <a href="https://t.me/The_Cricket_Corner" target="_blank" class="popup-btn join-btn">Join Now</a>
+      <!-- Link: https://t.me/The_Cricket_Corner -->
+      <a href="https://t.me/The_Cricket_Corner" target="_blank" class="popup-btn join-btn">Join Now</a>
       <button class="popup-btn already-btn" onclick="closePopup()">Already Joined</button>
     </div>
-  </div>
+    </div>
 </div>
   <header>
 <span class="material-icons menu-icon" onclick="toggleSidebar()">menu</span>
@@ -388,10 +407,10 @@
 </div>
 <div class="sidebar" id="sidebar">
   <div class="menu-header">MENU</div>
-    <a href="https://t.me/The_Cricket_Corner" target="_blank"> Join Our Telegram</a>
+  <a href="https://t.me/The_Cricket_Corner" target="_blank"> Join Our Telegram</a>
   <a href="https://t.me/The_Cricket_Corner" target="_blank"> Contact Us</a>
   <a href="https://t.me/The_Cricket_Corner" target="_blank">Copyright</a>
-  <a href="#" onclick="showVisitorPopup()">Total Visitor</a>
+<a href="#" onclick="showVisitorPopup()">Total Visitor</a>
 </div>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
@@ -415,7 +434,6 @@
   </div>
   <div id="scoreboard" class="tab-content">
     <iframe src="https://live-scoreboard.pages.dev/"></iframe>
-   
   </div>
   <div id="highlights" class="tab-content">
 <iframe src="https://cricketstan.github.io/Top-moments-/" allowfullscreen></iframe> 
