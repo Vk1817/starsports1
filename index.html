@@ -1,213 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LIVE VIDEO STREAM</title>
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css"/>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* MAX-LEVEL RESET: Ensure the root elements fully fill the screen */
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #0a0a0a;
-      font-family: 'Poppins', sans-serif;
-      overflow: hidden; /* Prevent scrolling */
-      color: #e0e0e0;
-      height: 100%; 
-      width: 100%; 
-    }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LIVE VIDEO STREAM</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* MAX-LEVEL RESET: Ensure the root elements fully fill the screen */
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #0a0a0a;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden; /* Prevent scrolling */
+      color: #e0e0e0;
+      height: 100%; 
+      width: 100%; 
+    }
 
-    .video-container {
-      /* OPTIMIZED FULL SCREEN: position: fixed with 100% width/height */
-      position: fixed; 
-      top: 0;
-      left: 0;
-      width: 100%; /* CHANGED from 1000vw */
-      height: 100%; /* CHANGED from 1000vh */
-      background: #000;
-      z-index: 1; /* Ensure video is below the telegram button/popup */
-    }
+    .video-container {
+      /* FORCED FULL SCREEN: Using position: fixed to cover the entire viewport */
+      position: fixed; 
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+      z-index: 1; /* Ensure video is below the telegram button/popup */
+    }
 
-    /* CRITICAL FIX: Set iframe width and height to 100% to fill the container */
-    .video-container iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
+    /* Ensure iframe fills the entire container without any gaps */
+    .video-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      margin: 0;
+      padding: 0;
+    }
 
-    /* Floating Telegram Button */
-    #telegram-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #0088cc;
-        color: white;
-        padding: 12px 20px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        z-index: 100;
-        box-shadow: 0 4px 15px rgba(0, 136, 204, 0.5);
-        transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    #telegram-btn:hover {
-        background-color: #0077b3;
-        transform: scale(1.05);
-        box-shadow: 0 6px 20px rgba(0, 136, 204, 0.7);
-    }
-    #telegram-btn .material-icons {
-        font-size: 24px;
-    }
-    
-    /* Popup Styles */
-    .popup-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.85);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 99999;
-    }
+    /* Floating Telegram Button */
+    #telegram-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #0088cc; /* Telegram Blue */
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        z-index: 100; /* Ensure it is above the video */
+        box-shadow: 0 4px 15px rgba(0, 136, 204, 0.5);
+        transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    #telegram-btn:hover {
+        background-color: #0077b3;
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 136, 204, 0.7);
+    }
+    #telegram-btn .material-icons {
+        font-size: 24px;
+    }
+   
+    /* Popup Styles */
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        display: none; /* Hidden by default */
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+    }
 
-    .telegram-popup {
-        width: 90%;
-        max-width: 400px;
-        background: #1a1a1a;
-        padding: 24px;
-        border-radius: 12px;
-        box-shadow: 0 0 40px rgba(255, 140, 0, 0.5);
-        text-align: center;
-        border: 1px solid rgba(255, 140, 0, 0.3);
-        animation: fadeInPopup 0.3s ease-out;
-    }
+    .telegram-popup {
+        width: 90%;
+        max-width: 400px;
+        background: #1a1a1a;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0 0 40px rgba(255, 140, 0, 0.5); /* Orange glow */
+        text-align: center;
+        border: 1px solid rgba(255, 140, 0, 0.3);
+        animation: fadeInPopup 0.3s ease-out;
+    }
 
-    @keyframes fadeInPopup {
-        from { opacity: 0; transform: scale(0.9); }
-        to { opacity: 1; transform: scale(1); }
-    }
+    @keyframes fadeInPopup {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
 
-    .telegram-popup h2 {
-        color: #ff8c00;
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 12px;
-        text-shadow: 0 0 5px rgba(255, 140, 0, 0.4);
-    }
+    .telegram-popup h2 {
+        color: #ff8c00; /* Dark Orange for header */
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-shadow: 0 0 5px rgba(255, 140, 0, 0.4);
+    }
 
-    .telegram-popup p {
-        color: #ccc;
-        font-size: 15px;
-        margin-bottom: 25px;
-        line-height: 1.5;
-    }
+    .telegram-popup p {
+        color: #ccc;
+        font-size: 15px;
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
 
-    .popup-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
+    .popup-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
 
-    .popup-buttons button, .popup-buttons a {
-        display: block;
-        width: 100%;
-        padding: 15px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 600;
-        text-decoration: none;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-align: center;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
+    .popup-buttons button, .popup-buttons a {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
 
-    .btn-join {
-        background-color: #ff8c00;
-        color: #1a1a1a;
-        box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
-    }
-    .btn-join:hover {
-        background-color: #ffa500;
-        transform: translateY(-2px);
-        box-shadow: 0 0 30px rgba(255, 165, 0, 1);
-    }
+    .btn-join {
+        background-color: #ff8c00; /* Primary Join Button Orange */
+        color: #1a1a1a;
+        box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
+    }
+    .btn-join:hover {
+        background-color: #ffa500;
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(255, 165, 0, 1);
+    }
 
-    .btn-close {
-        background-color: #333;
-        color: #fff;
-    }
-    .btn-close:hover {
-        background-color: #555;
-        transform: translateY(-1px);
-    }
-  </style>
+    .btn-close {
+        background-color: #333;
+        color: #fff;
+    }
+    .btn-close:hover {
+        background-color: #555;
+        transform: translateY(-1px);
+    }
+
+    /* Keeping Plyr styles just in case the iframe is replaced with a video tag later */
+    .plyr--full-ui input[type=range] {
+      color: #1db954;
+    }
+  </style>
 </head>
 <body>
-    
+  
 <div class="video-container">
-  <iframe
-    src="https://cricketstan.github.io/Channel-13"
-    frameborder="0"
-    allowfullscreen
-    allow="autoplay; encrypted-media"
-    sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation"
-  ></iframe>
+  <iframe
+    src="https://cricketstan.github.io/Channel-13"
+    frameborder="0"
+    allowfullscreen
+    allow="autoplay; encrypted-media"
+    sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation"
+  ></iframe>
 </div>
 
+<!-- Floating Telegram Button -->
 <button id="telegram-btn" onclick="showPopup()">
-    <span class="material-icons">send</span>
-    Join Telegram
+    <span class="material-icons">send</span>
+    Join Telegram
 </button>
 
+<!-- Telegram Popup -->
 <div id="telegram-popup-overlay" class="popup-overlay">
-    <div class="telegram-popup">
-        <h2>Support Us!</h2>
-        <p>Join our Telegram channel **@cricketcorner** for instant updates, highlights, and exclusive links.</p>
-        <div class="popup-buttons">
-            <a href="https://t.me/The_Cricket_Corner" target="_blank" class="btn-join" onclick="closePopup()">Join Now</a>
-            <button class="btn-close" onclick="closePopup()">Already Joined</button>
-        </div>
-    </div>
+    <div class="telegram-popup">
+        <h2>Support Us!</h2>
+        <p>Join our Telegram channel **@cricketcorner** for instant updates, highlights, and exclusive links.</p>
+        <div class="popup-buttons">
+            <a href="https://t.me/The_Cricket_Corner" target="_blank" class="btn-join" onclick="closePopup()">Join Now</a>
+            <button class="btn-close" onclick="closePopup()">Already Joined</button>
+        </div>
+    </div>
 </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-  <script>
-    // Video stream data fetch (kept but currently unused by the iframe)
-    const jsonUrl = 'https://raw.githubusercontent.com/StmpupCricket/Star-Sports-Hindi-json/refs/heads/main/data.json';
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <script>
+    // Video stream data fetch (kept but currently unused by the iframe)
+    const jsonUrl = 'https://raw.githubusercontent.com/StmpupCricket/Star-Sports-Hindi-json/refs/heads/main/data.json';
 
-    fetch(jsonUrl)
-      .then(res => res.json())
-      .then(data => {
-        console.log('Stream data fetched:', data.stream_url);
-      })
-      .catch(err => {
-        console.error('Failed to load stream data:', err);
-      });
+    fetch(jsonUrl)
+      .then(res => res.json())
+      .then(data => {
+        console.log('Stream data fetched:', data.stream_url);
+      })
+      .catch(err => {
+        console.error('Failed to load stream data:', err);
+      });
 
-    // Popup functions
-    function showPopup() {
-        document.getElementById('telegram-popup-overlay').style.display = 'flex';
-    }
+    // Popup functions
+    function showPopup() {
+        document.getElementById('telegram-popup-overlay').style.display = 'flex';
+    }
 
-    function closePopup() {
-        document.getElementById('telegram-popup-overlay').style.display = 'none';
-    }
+    function closePopup() {
+        document.getElementById('telegram-popup-overlay').style.display = 'none';
+    }
 
-  </script>
+  </script>
 </body>
 </html>
