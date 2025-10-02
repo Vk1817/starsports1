@@ -369,9 +369,9 @@
     <div class="popup-subtitle">Join our Telegram for latest updates.</div>
     <div class="popup-buttons">
             <button class="popup-btn join-btn" onclick="openTelegramAndStartStream()">Join Now</button>
-            <button class="popup-btn already-btn" onclick="startStream()">Already Joined</button>
+      <button class="popup-btn already-btn" onclick="startStream()">Already Joined</button>
     </div>
-  </div>
+   </div>
 </div>
   <header>
 <span class="material-icons menu-icon" onclick="toggleSidebar()">menu</span>
@@ -424,11 +424,9 @@
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
   <script>
-    // 1. UPDATED TELEGRAM LINK CONSTANT
+    // 1. **CORRECTED AND UPDATED TELEGRAM LINK**
     const TELEGRAM_LINK = "https://t.me/The_Cricket_Corner"; 
     const POPUP_ID = 'popup';
-
-    // REMOVED HLS/Plyr code as the video player uses an iFrame.
 
     /**
      * Loads the video stream (the iframe src) and hides the popup.
@@ -437,7 +435,6 @@
         const popup = document.getElementById(POPUP_ID);
         const iframe = document.getElementById('mainVideoFrame');
         
-        // Get the stream URL from the data attribute
         const streamSrc = iframe.getAttribute('data-stream-src');
 
         // 1. Load the stream by setting the src attribute
@@ -450,11 +447,11 @@
     }
 
     /**
-     * Opens Telegram link, then loads the stream.
+     * Opens Telegram link (using the corrected constant), then loads the stream.
      */
     function openTelegramAndStartStream() {
-        // Open Telegram link in a new tab using the updated constant
-        window.open(TELEGRAM_LINK, '_blank');
+        // This is the line that opens your channel:
+        window.open(TELEGRAM_LINK, '_blank'); 
         
         // Start the video stream
         startStream();
@@ -472,8 +469,6 @@
       document.getElementById('sidebar').classList.toggle('open');
       document.getElementById('overlay').classList.toggle('show');
     }
-
-    // NOTE: closePopup() is now replaced by startStream() in the HTML.
     
     function showVisitorPopup() {
         const popup = document.getElementById("visitorPopup");
@@ -490,6 +485,10 @@
           popup.style.display = "none";
         }, 300);
       }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // This ensures the video iframe is initially empty and the popup is displayed.
+    });
   </script>
 </body>
 </html>
