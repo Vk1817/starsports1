@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 <title>CRICKCAST</title>
 
+<!-- Google Analytics (Invisible, Only for You) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PMP6LYF4Z9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PMP6LYF4Z9');
+</script>
+
 <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -243,7 +252,7 @@ header{
   </div>
 </header>
 
-<!-- VIDEO (✅ FIXED PLAYBACK) -->
+<!-- VIDEO -->
 <div class="video-container">
   <iframe
     src="https://cricketstan.github.io/Channel-13/"
@@ -279,7 +288,8 @@ function closePopup(){
 }
 
 function startStream(){
-  document.querySelector('.video-container iframe').src = document.querySelector('.video-container iframe').src;
+  document.querySelector('.video-container iframe').src =
+    document.querySelector('.video-container iframe').src;
 }
 
 function closeVisitorPopup(){
